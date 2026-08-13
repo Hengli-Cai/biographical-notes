@@ -9,6 +9,10 @@ set "REPO=%REPO:\=/%"
 set "REPO=%REPO:~0,-1%"
 git config --global --add safe.directory "%REPO%"
 
+rem Point to the Gitee repository (backup)
+git remote add gitee https://gitee.com/cai-hengli/biographical-notes.git 2>nul
+git remote set-url gitee https://gitee.com/cai-hengli/biographical-notes.git
+
 echo ============================================
 echo  Step 1/3: Save local changes
 echo ============================================
@@ -22,7 +26,7 @@ echo  Step 2/3: Merge with files already on Gitee
 echo  (If asked, enter your Gitee username and
 echo   password or personal access token)
 echo ============================================
-git pull origin master --allow-unrelated-histories -X ours --no-edit
+git pull gitee master --allow-unrelated-histories -X ours --no-edit
 if errorlevel 1 goto :pullfail
 echo Done.
 
@@ -30,14 +34,11 @@ echo.
 echo ============================================
 echo  Step 3/3: Push everything to Gitee
 echo ============================================
-git push -u origin master
+git push -u gitee main:master
 if errorlevel 1 goto :pushfail
 
 echo.
-echo [OK] Your website files are now on Gitee.
-echo Next: open the repo page in your browser,
-echo go to "Service" - "Gitee Pages", select
-echo branch "master" and click "Start/Update".
+echo [OK] Your website files are backed up on Gitee.
 echo.
 pause
 exit /b 0
