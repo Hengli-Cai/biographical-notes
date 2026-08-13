@@ -3,6 +3,12 @@ setlocal
 cd /d "%~dp0"
 set "PATH=E:\Program Files\Git\cmd;%PATH%"
 
+rem Allow Git to work in this folder (fixes "dubious ownership")
+set "REPO=%~dp0"
+set "REPO=%REPO:\=/%"
+set "REPO=%REPO:~0,-1%"
+git config --global --add safe.directory "%REPO%"
+
 echo ============================================
 echo  Step 1/3: Save local changes
 echo ============================================
